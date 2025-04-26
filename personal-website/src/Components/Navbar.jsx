@@ -37,11 +37,11 @@ function Navbar() {
 
             <ul className="hidden md:flex gap-10">
                 <li className="cursor-pointer text-xl opacity-70 transition-all duration-300 hover:text-blue-500 hover:opacity-100">
-                    <BsLinkedin />
+                    <a href="https://www.linkedin.com/in/justinfwu/"><BsLinkedin /></a>
                 </li>
 
                 <li className="cursor-pointer text-xl opacity-70 transition-all duration-300 hover:text-white-500 hover:opacity-100">
-                    <BsGithub />
+                    <a href="https://github.com/JustinFWu"><BsGithub /></a>
                 </li>
             </ul>
 
