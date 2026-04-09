@@ -16,9 +16,7 @@ function Hero() {
           <h1 className="bg-gradient-to-r from-white to-zinc-500
             bg-clip-text text-transparent text-5xl font-light leading-tight md:text-7xl ">Justin Feng Wu</h1>
           <h3 className="text-zinc-400 text-2xl md:text-3xl font-light tracking-wide">Computer Science</h3>
-          <p className="md:text-base text-pretty text-sm text-zinc-500">As a third-year university student and aspiring software engineer, I am actively seeking graduate roles and internships where I can apply my academic knowledge
-            and self-developed skills to real-world challenges. I am eager to contribute to innovative projects, collaborate with experienced industry professionals, and
-            continuously develop my technical expertise in a dynamic environment.</p>
+          <p className="md:text-base text-pretty text-sm text-zinc-500">Graduate SWE at InsightFactory.ai, building and maintaining in-house data platforms and pipelines.</p>
         </motion.div>
       </div>
     </div>

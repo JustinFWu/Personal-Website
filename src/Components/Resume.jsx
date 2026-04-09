@@ -41,11 +41,9 @@ function Resume() {
         {/* Summary */}
         <Section title="Summary">
           <p className="text-sm leading-relaxed text-zinc-400">
-            As a third-year university student and aspiring software engineer, I am actively
-            seeking graduate roles and internships where I can apply my academic knowledge and
-            self-developed skills to real-world challenges. I am eager to contribute to innovative
-            projects, collaborate with experienced industry professionals, and continuously develop
-            my technical expertise in a dynamic environment.
+            Graduate SWE at InsightFactory.ai, developing and maintaining the internal data platform and
+            data pipelines, with a focus on building reliable, scalable backend systems. Passionate
+            about creating impactful solutions and contributing to real-world applications.
           </p>
         </Section>
 
