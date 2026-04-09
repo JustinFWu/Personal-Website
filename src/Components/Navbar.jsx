@@ -1,21 +1,71 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
+import { motion } from "motion/react"
 import { BsGithub, BsLinkedin } from "react-icons/bs"
 import { BiMenu, BiX } from "react-icons/bi";
 
+const HOME_SECTIONS = ["home", "skills", "projects", "contact"];
+
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [activeSection, setActiveSection] = useState("home");
     const location = useLocation();
     const isHome = location.pathname === "/";
+    const isResume = location.pathname === "/resume";
 
-    const menuOpen = () => {
-        setIsOpen(!isOpen);
-    }
-
+    const menuOpen = () => setIsOpen(!isOpen);
     const closeMenu = () => setIsOpen(false);
 
-    const linkClass = "cursor-pointer text-zinc-400 transition-all duration-300 hover:text-zinc-100"
-    const activeClass = "cursor-pointer text-zinc-100 transition-all duration-300"
+    const scrollToSection = (id) => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+        closeMenu();
+    };
+
+    useEffect(() => {
+        if (!isHome) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActiveSection(entry.target.id);
+                    }
+                });
+            },
+            {
+                rootMargin: "-45% 0px -45% 0px",
+                threshold: 0,
+            }
+        );
+
+        const elements = HOME_SECTIONS
+            .map((id) => document.getElementById(id))
+            .filter(Boolean);
+
+        elements.forEach((el) => observer.observe(el));
+        return () => observer.disconnect();
+    }, [isHome]);
+
+    const baseItem = "relative cursor-pointer transition-colors duration-300";
+    const idleText = "text-zinc-400 hover:text-zinc-100";
+    const activeText = "text-zinc-100";
+
+    const NavItem = ({ id, label, onClick, isActive }) => (
+        <li
+            onClick={onClick}
+            className={`${baseItem} ${isActive ? activeText : idleText}`}
+        >
+            {label}
+            {isActive && (
+                <motion.span
+                    layoutId="activeNavUnderline"
+                    className="absolute -bottom-2 left-0 right-0 h-px bg-zinc-100"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+            )}
+        </li>
+    );
 
     return (
         <nav className="fixed top-0 z-[10] flex w-full items-center
@@ -27,16 +77,47 @@ function Navbar() {
                 <ul className="hidden md:flex gap-10">
                     {isHome ? (
                         <>
-                            <a href="#home" className={linkClass}><li>Home</li></a>
-                            <a href="#skills" className={linkClass}><li>Skills</li></a>
-                            <a href="#projects" className={linkClass}><li>Projects</li></a>
-                            <a href="#contact" className={linkClass}><li>Contact</li></a>
+                            <NavItem
+                                id="home"
+                                label="Home"
+                                onClick={() => scrollToSection("home")}
+                                isActive={activeSection === "home"}
+                            />
+                            <NavItem
+                                id="skills"
+                                label="Skills"
+                                onClick={() => scrollToSection("skills")}
+                                isActive={activeSection === "skills"}
+                            />
+                            <NavItem
+                                id="projects"
+                                label="Projects"
+                                onClick={() => scrollToSection("projects")}
+                                isActive={activeSection === "projects"}
+                            />
+                            <NavItem
+                                id="contact"
+                                label="Contact"
+                                onClick={() => scrollToSection("contact")}
+                                isActive={activeSection === "contact"}
+                            />
                         </>
                     ) : (
-                        <Link to="/" className={linkClass}><li>Home</li></Link>
+                        <Link to="/" className={`${baseItem} ${idleText}`}>
+                            <li>Home</li>
+                        </Link>
                     )}
-                    <Link to="/resume" className={location.pathname === "/resume" ? activeClass : linkClass}>
-                        <li>Resume</li>
+                    <Link to="/resume" className={`${baseItem} ${isResume ? activeText : idleText}`}>
+                        <li className="relative">
+                            Resume
+                            {isResume && (
+                                <motion.span
+                                    layoutId="activeNavUnderline"
+                                    className="absolute -bottom-2 left-0 right-0 h-px bg-zinc-100"
+                                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                />
+                            )}
+                        </li>
                     </Link>
                 </ul>
 
@@ -64,15 +145,15 @@ function Navbar() {
                     <ul className="flex flex-col gap-8">
                         {isHome ? (
                             <>
-                                <a href="#home" onClick={closeMenu} className={linkClass}><li>Home</li></a>
-                                <a href="#skills" onClick={closeMenu} className={linkClass}><li>Skills</li></a>
-                                <a href="#projects" onClick={closeMenu} className={linkClass}><li>Projects</li></a>
-                                <a href="#contact" onClick={closeMenu} className={linkClass}><li>Contact</li></a>
+                                <li onClick={() => scrollToSection("home")} className={`${baseItem} ${activeSection === "home" ? activeText : idleText}`}>Home</li>
+                                <li onClick={() => scrollToSection("skills")} className={`${baseItem} ${activeSection === "skills" ? activeText : idleText}`}>Skills</li>
+                                <li onClick={() => scrollToSection("projects")} className={`${baseItem} ${activeSection === "projects" ? activeText : idleText}`}>Projects</li>
+                                <li onClick={() => scrollToSection("contact")} className={`${baseItem} ${activeSection === "contact" ? activeText : idleText}`}>Contact</li>
                             </>
                         ) : (
-                            <Link to="/" onClick={closeMenu} className={linkClass}><li>Home</li></Link>
+                            <Link to="/" onClick={closeMenu} className={`${baseItem} ${idleText}`}><li>Home</li></Link>
                         )}
-                        <Link to="/resume" onClick={closeMenu} className={linkClass}><li>Resume</li></Link>
+                        <Link to="/resume" onClick={closeMenu} className={`${baseItem} ${isResume ? activeText : idleText}`}><li>Resume</li></Link>
                     </ul>
 
                     <ul className="flex flex-wrap gap-5">
